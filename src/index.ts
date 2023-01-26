@@ -5,6 +5,10 @@ import { MongoGetUsersRepository } from "./repositories/get-users/mongo-get-user
 import { GetUsersController } from "./controllers/get-users/get-users";
 import { MongoCreateUserRepository } from "./repositories/create-user/mongo-create-user";
 import { CreateUserController } from "./controllers/create-user/create-user";
+import { MongoUpdateUserRepository } from "./repositories/update-user/mongo-update-user";
+import { UpdateUserController } from "./controllers/update-user/update-user";
+import { MongoDeleteUserRepository } from "./repositories/delete-user/mongo-delete-user";
+import { DeleteUserController } from "./controllers/delete-user/delete-user";
 
 const main = async () => {
   config();
@@ -34,6 +38,30 @@ const main = async () => {
 
     res.status(statusCode).send(body);
   });
+
+  app.patch("/users/:id", async (req, res) => {
+    const mongoUpdateUserRepository = new MongoUpdateUserRepository();
+    const updatedUserController = new UpdateUserController(
+      mongoUpdateUserRepository
+    );
+
+    const { body, statusCode } = await updatedUserController.handle({
+      body: req.body,
+      params: req.params,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.delete("/users/:id", async (req, res) => {
+    const mongoDeleteUserReposiory = new MongoDeleteUserRepository()
+    const deleteUserController = new DeleteUserController(mongoDeleteUserReposiory)
+
+    const {body, statusCode} = await deleteUserController.handle({
+      params:req.params
+    })
+    res.status(statusCode).send(body)
+  })
 
   const port = process.env.PORT || 3000;
 
