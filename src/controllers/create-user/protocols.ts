@@ -1,11 +1,10 @@
 import { Users } from "../../models/user";
-
-
+import { HttpResponse, HttpRequest } from "../protocols";
 
 export interface ICreateUserController {
-    handle(): void;
+  handle(httpRequest: HttpRequest<Users>): Promise<HttpResponse<Users>>;
 }
 
 export interface ICreateUserRepository {
-    createUser(params:Users):Promise<Users>;
+  createUser(params: Users): Promise<Users>;
 }
