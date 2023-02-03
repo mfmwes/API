@@ -35,6 +35,7 @@ export class CreateUserController implements IController {
         body: user,
       };
     } catch (error) {
+    
       return {
         statusCode: 500,
         body: "something went wrong",
